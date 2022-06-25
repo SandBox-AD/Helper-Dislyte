@@ -14,3 +14,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.text-purple{
+  color: #3C096C;
+}
