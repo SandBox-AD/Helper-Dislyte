@@ -1,0 +1,30 @@
+
+table.table{
+    width: 100%;
+    margin-bottom: 1rem;
+}
+.table th,
+.table td{
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+    padding: 0.5rem 0.5rem;
+    
+}
+.table th{
+    text-align: inherit;
+    text-align: -webkit-match-parent;
+    
+}
+table.purple{
+    background-color: #510E65;
+
+}
+table.purple.tableStriped tr:nth-child(even) {
+    background-color: #66135D;
+    
+}
+table.tableBorderless{
+    border-spacing: 0;
+}
+

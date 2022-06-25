@@ -1,5 +1,6 @@
 html,
 body {
+  background-color: #3c096c;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -15,6 +16,17 @@ a {
   box-sizing: border-box;
 }
 
-.text-purple{
+.text-purple {
   color: #3C096C;
+}
+
+.w-25{
+  width: 25%;
+}
+
+.img-thumbnails-navbar {
+  margin: 0.25em;
+  max-width: 100%;
+  height: min-content;
+  height: 60px;
 }

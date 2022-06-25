@@ -5,12 +5,13 @@ import {
 import Head from 'next/head'
 
 import Layout, { siteTitle } from '../../components/Layout'
+import Table from "../../components/Table"
 
 
 export default function Character() {
     const [data, setData] = useState(null)
     const [isLoading, setLoading] = useState(false)
-
+    const [picture, setPicture] = useState(null)
     useEffect(() => {
         setLoading(true)
         fetch('http://localhost:9000/character')
@@ -19,6 +20,12 @@ export default function Character() {
                 setData(data.characters)
                 setLoading(false)
             })
+        fetch('http://localhost:9000/picture/esper')
+        .then((res) => res.json())
+        .then((picture) => {
+            setPicture(picture)
+            setLoading(false)
+        })
     }, [])
 
     if (isLoading) return <p> Loading... </p>
@@ -28,20 +35,7 @@ export default function Character() {
             <Head>
                 <title>{siteTitle}</title>
             </Head>
-            <ul>
-                <li></li>
-            </ul>
-            {data.name.map(character => <div>{ character }</div> ) }
+            <Table test data={data} picture={ picture} />
         </Layout>
-        // <div>
-        //     <Navbar />
-            
-            /*{ {data.name.map((character, index) =>
-                <ul>
-                    <li>{index + 1}</li>
-                    <li>{character}</li>
-                </ul>
-            )} }*/
-        //  </div>  
     )
 }
