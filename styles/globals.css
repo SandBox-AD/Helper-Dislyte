@@ -30,3 +30,6 @@ a {
   height: min-content;
   height: 60px;
 }
+.text-center{
+  text-align: center;
+}

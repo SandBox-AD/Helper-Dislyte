@@ -1,17 +1,13 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import styles from './layout.module.css';
-import utilStyles from '../styles/utils.module.css';
-import Link from 'next/link';
+import styles from './css/layout.module.css';
 import Navbar from '../components/Navbar'
 
-const name = 'Creep';
 export const siteTitle = 'Dislyte Helper';
 
-export default function Layout({ children }) {
+export default function Layout({ children, user }) {
   return (
     <div>
-      <Navbar />
+      <Navbar user={user}/>
       <div className={styles.container}>
       <Head>
         <link rel="icon" href="/favicon.ico" />

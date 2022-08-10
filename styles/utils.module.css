@@ -53,3 +53,12 @@
 .textWhite{
     color: white;
 }
+.dFlex{
+    display: flex;
+}
+.alignCenter{
+    align-items: center;
+}
+.justifySpaceBetween{
+    justify-content: space-between;
+}

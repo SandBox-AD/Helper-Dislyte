@@ -2,6 +2,7 @@ import styleTable from './table.module.css'
 import styleUtils from './../styles/utils.module.css'
 
 export default function Table({ children, data }) {
+    console.log(data)
     return (
         <table className={`${styleTable.table} ${styleTable.purple} ${styleTable.tableBorderless}  ${styleUtils.textWhite}`}>
             <thead>
@@ -12,11 +13,17 @@ export default function Table({ children, data }) {
                 </tr>
             </thead>
             <tbody>
-                {data.name.map(( esper, index ) => 
+                {data.map(( esper, index ) => 
                     <tr key={index}>
                         <td>{index + 1}</td>
-                        <td>{esper}</td>
-                        <td><img src={data.picture[index]} alt={ esper } /></td>
+                        <td>
+                            <div className={`${styleUtils.dFlex} ${styleUtils.alignCenter} ${styleUtils.justifySpaceBetween}`}>
+                                <span>{esper.esper} </span> <img src={esper.picture} alt={ esper.esper } />
+                            </div>
+                        </td>
+                        <td>
+                            <link></link>
+                        </td>
                     </tr>
                     )}
             </tbody>
