@@ -6,7 +6,7 @@ export default function Navbar() {
   const [isNavExpanded, setIsNavExpanded] = useState(false)
     return (
       <nav className={style.navigation}>
-          <img src='./favicon.ico' className='img-thumbnails-navbar'/>
+          <img src='/favicon.ico' className='img-thumbnails-navbar'/>
           <a href="/" className={style['brand-name']}>
             Dislyte Helper
           </a>
