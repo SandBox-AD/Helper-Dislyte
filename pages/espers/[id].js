@@ -14,7 +14,7 @@ export async function getStaticPaths() {
     // Call an external API endpoint to get posts
     const res = await fetch('http://localhost:8080/espers/')
     const espers = await res.json()
-    const paths = espers['data'].map((esper) => ({
+    const paths = espers['espers'].map((esper) => ({
         params: { id: esper.id.toString() },
     }))
     // We'll pre-render only these paths at build time.
@@ -33,7 +33,6 @@ export async function getStaticProps({ params }) {
 export default function Esper({esper}) {
     const { user, error } = useUser();
     const [open, setOpen] = useState(true);
-    console.log(esper)
     if (error) return (
         <Layout characters >
             <Head>

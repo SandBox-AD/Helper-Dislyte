@@ -27,7 +27,7 @@ export default function Character() {
         })
         .then((res) => res.json())
         .then((data) => {
-            setData(data.data);
+            setData(data.espers);
             setLoading(false);
         })
     }
