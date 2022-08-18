@@ -12,7 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 export async function getStaticPaths() {
     // Call an external API endpoint to get posts
-    const res = await fetch('http://localhost:8080/espers/')
+    const res = await fetch('http://localhost:8080/api/espers/')
     const espers = await res.json()
     const paths = espers['espers'].map((esper) => ({
         params: { id: esper.id.toString() },
@@ -24,7 +24,7 @@ export async function getStaticPaths() {
 
 
 export async function getStaticProps({ params }) {
-    let url = "http://localhost:8080/esper/"+params.id
+    let url = "http://localhost:8080/api/esper/"+params.id
     const res = await fetch(url)
     const esper = await res.json()
     return { props: { esper } }

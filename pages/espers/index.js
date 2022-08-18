@@ -15,11 +15,10 @@ export default function Character() {
     const [data, setData] = useState(null)
     const [isLoading, setLoading] = useState(false)
     const { user, error } = useUser();
-    const [show, setShow] = useState(false);
     function callApi() {
         setLoading(true)
         setData();
-        fetch('http://localhost:8080/espers', {
+        fetch('http://localhost:8080/api/espers', {
             mode: 'cors',
             headers: {
                 'Access-Control-Allow-Origin':'*'

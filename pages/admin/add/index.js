@@ -3,23 +3,20 @@
  */
 import React, {
     useState,
-    useEffect
 } from "react";
 import { useUser } from '@auth0/nextjs-auth0';
-import Head from 'next/head';
 //Import mui
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import { AppBar, Drawer, Box, CssBaseline, Toolbar, IconButton, Typography, Badge, Divider, List, ListItemButton, ListItemIcon, ListItemText, Container, Grid, Copyright, Paper,} from '@mui/material';
 import { Notifications, ChevronLeft, Menu, ShoppingCart, People, Layers, Assignment, BarChartRounded } from '@mui/icons-material';
 //Import perso
-// import Layout, { siteTitle } from '../../../components/Layout';
 import Dashboard from "../../../components/Admin/Dashboard";
 import { mainListItems, secondaryListItems } from "../../../components/Admin/listitem";
 
 export async function getStaticProps() {
-    const [esperRes, reliqueRes,setEsperRes] = await Promise.all([
-        fetch("http://localhost:8080/espers"), 
-        fetch("http://localhost:8080/reliques")
+    const [esperRes, reliqueRes] = await Promise.all([
+        fetch("http://localhost:8080/api/espers"), 
+        fetch("http://localhost:8080/api/reliques")
       ]);
     const [espers, reliques] = await Promise.all([
     esperRes.json(), 
@@ -73,11 +70,12 @@ const MuiDrawer = styled(Drawer, { shouldForwardProp: (prop) => prop !== 'open' 
     );
 const mdTheme = createTheme();
 export default function Admin({espers, reliques}) {
+    const { user, error } = useUser();
     const [open, setOpen] = useState(true);
     const toggleDrawer = () => {
-      setOpen(!open);
+        setOpen(!open);
     };
-    return (
+    return user &&(
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
@@ -129,7 +127,7 @@ export default function Admin({espers, reliques}) {
                 <Box component="main" sx={{ backgroundColor: (theme) => theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900], flexGrow: 1, height: '100vh', overflow: 'auto', }}>
                     <Toolbar />
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                        <Dashboard data={{espers, reliques}}/>
+                        <Dashboard data={{ espers, reliques }} user={ user} />
                     </Container>
                 </Box>
             </Box>

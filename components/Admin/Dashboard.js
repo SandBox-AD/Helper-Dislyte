@@ -1,29 +1,23 @@
 import { useState } from 'react';
-import { Box, MenuItem, Button, Select, InputLabel, FormHelperText, Alert, Grid, Paper, Avatar, Card, CardHeader, CardMedia, CardContent, Typography, Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material';
+import { Box, MenuItem, Button, Select, InputLabel, FormHelperText, Alert, Grid, Paper, Avatar, Card, CardHeader, CardMedia, CardContent, Typography, Table, TableBody, TableCell, TableHead, TableRow, Checkbox} from '@mui/material';
 
-export default function Dashboard({ children, data }) {
+export default function Dashboard({ children, data, user }) {
     const [esper, setEsperValue] = useState(data.espers.espers[0].id)
     const [esperSet, setEsperSet] = useState({"espersSet": []})
     const [relique, setRelique] = useState(data.reliques.reliques[0].id)
     const [relique2, setRelique2] = useState(data.reliques.reliques[9].id)
-    const [alert, setAlert] = useState(false);
-    const [error, setError] = useState(false);
     const [indexEspeer, setIndex] = useState(data.espers.espers[0])
     const [indexRelique2, setIndexRelique2] = useState(data.reliques.reliques[9])
     const [indexRelique4, setIndexRelique4] = useState(data.reliques.reliques[0])
-    const [alertContent, setAlertContent] = useState('');
+    fetch('http://localhost:8080/api/set/esper/'+esper).then(response => response.json()).then(data => setEsperSet(data))
     const handleChange = (event) => {
         let name = event.target.name;
-        let url = 'http://localhost:8080/set/esper/'+event.target.value
-        console.log(url)
-        fetch(url).then(response => response.json()).then(data => setEsperSet(data))
         if (name == "esper") {
             setEsperValue(event.target.value);
             setIndex(data.espers.espers[data.espers.espers.findIndex(obj => obj.id == event.target.value)])
         } else if (name == "relique4") {
             setRelique(event.target.value);
             setIndexRelique4(data.reliques.reliques[data.reliques.reliques.findIndex(obj => obj.id == event.target.value)])
-            console.log(indexRelique4)
         } else if (name == "relique2") {
             setRelique2(event.target.value)
             setIndexRelique2(data.reliques.reliques[data.reliques.reliques.findIndex(obj => obj.id == event.target.value)])
@@ -35,6 +29,7 @@ export default function Dashboard({ children, data }) {
             esper: event.target.esper.value,
             relique4: event.target.relique4.value,
             relique2: event.target.relique2.value,
+            isValid: 0,
         }
         const JSONdata = JSON.stringify(data);
         const options = {
@@ -44,23 +39,22 @@ export default function Dashboard({ children, data }) {
             },
             body: JSONdata,
         }
-        const response = await fetch('http://localhost:8080/create/esper/possede', options);
-        const result = await response.json();
-        if (result.message === true){
-            setAlertContent(result);
-            setAlert(true);
-        }
-        else
-        {
-            setAlertContent(result);
-            setError(true);
-        }
-
+        fetch('http://localhost:8080/api/create/esper/possede', options);
+        let contenu = "Validé l'esper ajoutée";
+        fetch('http://localhost:8080/api/notification/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                contenu: contenu,
+                user: user.sub.substring(user.sub.indexOf("|")+1)
+            }),
+        });
+        fetch('http://localhost:8080/api/set/esper/'+ event.target.esper.value).then(response => response.json()).then(data => setEsperSet(data))
     }
     return (
         <Grid container spacing={3} alignItems="stretch">
-            {alert ? <Alert severity="info">Esper enregistré</Alert> : <div></div> }
-            {error ? <Alert severity="error">{ error }</Alert> : <div></div> }
             <Grid item xs>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                     <Box component="form" onSubmit={handleSubmit}>
@@ -130,11 +124,13 @@ export default function Dashboard({ children, data }) {
                         </TableHead>
                         <TableBody>
                             {esperSet.espersSet.map((esper, index) => (
+                                // esper.isValid == 1 &&
                                 <TableRow key={index}>
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{esper.esper}</TableCell>
                                     <TableCell>{esper.relique4}</TableCell>
                                     <TableCell>{esper.relique2}</TableCell>
+                                    <TableCell>{esper.isValid ? "Validé" : "Pas encore Validé"}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
