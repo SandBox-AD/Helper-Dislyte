@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { useUser } from '@auth0/nextjs-auth0'
 //Import perso
 import Dashboard from '../../../../components/Admin/Dashboard'
-import Navbar from '../../../../components/Admin/Navbar'
+import Layout from '../../../../components/Admin/_layout'
+import { Box, Toolbar, Container } from '@mui/material'
 
 export async function getStaticProps() {
   const [esperRes, reliqueRes] = await Promise.all([
@@ -18,30 +19,31 @@ export async function getStaticProps() {
 
 export default function Admin({ espers, reliques }) {
   const { user, error } = useUser()
-  const [open, setOpen] = useState(true)
-  const toggleDrawer = () => {
-    setOpen(!open)
-  }
   return (
     user && (
-        <Navbar/>
-    //   <Box
-    //     component="main"
-    //     sx={{
-    //       backgroundColor: (theme) =>
-    //         theme.palette.mode === 'light'
-    //           ? theme.palette.grey[100]
-    //           : theme.palette.grey[900],
-    //       flexGrow: 1,
-    //       height: '100vh',
-    //       overflow: 'auto',
-    //     }}
-    //   >
-    //     <Toolbar />
-    //     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-    //       <Dashboard data={{ espers, reliques }} user={user} />
-    //     </Container>
-    //   </Box>
+      <Layout
+        children={
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              height: '100vh',
+              overflow: 'auto',
+            }}
+          >
+            <Toolbar />
+            <Container
+              maxWidth="lg"
+              sx={{
+                mt: 4,
+                mb: 4,
+              }}
+            >
+              <Dashboard data={{ espers, reliques }} user={user} />
+            </Container>
+          </Box>
+        }
+      />
     )
   )
 }
