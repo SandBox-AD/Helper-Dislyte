@@ -1,6 +1,3 @@
 export default async (req, res) => {
-    const user = req.session.get("user");
-    res.json({
-        data: user
-    });
+  res.status(200).json({ data: req.session.get('user') })
 }

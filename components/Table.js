@@ -1,8 +1,8 @@
-import styleTable from './table.module.css'
+import styleTable from './css/table.module.css'
 import styleUtils from './../styles/utils.module.css'
+import Image from 'next/image';
 
 export default function Table({ children, data }) {
-    console.log(data)
     return (
         <table className={`${styleTable.table} ${styleTable.purple} ${styleTable.tableBorderless}  ${styleUtils.textWhite}`}>
             <thead>
@@ -18,7 +18,7 @@ export default function Table({ children, data }) {
                         <td>{index + 1}</td>
                         <td>
                             <div className={`${styleUtils.dFlex} ${styleUtils.alignCenter} ${styleUtils.justifySpaceBetween}`}>
-                                <span>{esper.esper} </span> <img src={esper.picture} alt={ esper.esper } />
+                                <span>{esper.esper} </span> <Image src={esper.picture} alt={ esper.esper } />
                             </div>
                         </td>
                         <td>
