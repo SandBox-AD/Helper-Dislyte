@@ -1,25 +1,26 @@
-import { useState } from 'react'
-import Link from 'next/link';
-import style from '../styles/navbar.module.css';
+import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Avatar } from '@mui/material';
+import style from '../styles/navbar.module.css';
+
 export default function Navbar() {
-  const [isNavExpanded, setIsNavExpanded] = useState(false)
+  const [isNavExpanded, setIsNavExpanded] = React.useState(false);
   return (
     <nav className={style.navigation}>
-      <Avatar variant='square'>
+      <Avatar variant="square">
         <Image src="/favicon.ico" layout="fill" alt="FavIcon" />
       </Avatar>
       <Link href="/" className={style['brand-name']}>
         Dislyte Helper
       </Link>
       <button
+        type="button"
         className={style.hamburger}
         onClick={() => {
-          setIsNavExpanded(!isNavExpanded)
+          setIsNavExpanded(!isNavExpanded);
         }}
       >
-        {/* icon from heroicons.com */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -58,5 +59,5 @@ export default function Navbar() {
         </ul>
       </div>
     </nav>
-  )
+  );
 }

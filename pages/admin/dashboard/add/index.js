@@ -4,21 +4,28 @@ import { useUser } from '@auth0/nextjs-auth0'
 import Dashboard from '../../../../components/Admin/Dashboard'
 import Layout from '../../../../components/Admin/_layout'
 import { Box, Toolbar, Container } from '@mui/material'
+import Error from '../../../../components/common/AlertCommon/AlertCommon'
+import loadRelique from '../../../../lib/loadReliques'
+import loadEsper from '../../../../lib/loadEsper'
+import loadSets from '../../../../lib/loadSet'
+
 
 export async function getStaticProps() {
-  const [esperRes, reliqueRes] = await Promise.all([
-    fetch('http://localhost:8080/api/esper'),
-    fetch('http://localhost:8080/api/relique'),
-  ])
-  const [espers, reliques] = await Promise.all([
-    esperRes.json(),
-    reliqueRes.json(),
-  ])
-  return { props: { espers, reliques } }
+  const espers = await loadEsper()
+  const reliques = await loadRelique()
+  const set = await loadSets()
+
+  return { props: { espers, reliques, set } }
 }
 
-export default function Admin({ espers, reliques }) {
+export default function Admin({ espers, reliques, set }) {
   const { user, error } = useUser()
+  console.log(set)
+  // if (!user)
+  //   return (
+  //     <Layout children={<Error severity={'error'} msg={error} />}>
+  //     </Layout>
+  //   );
   return (
     user && (
       <Layout
@@ -39,7 +46,7 @@ export default function Admin({ espers, reliques }) {
                 mb: 4,
               }}
             >
-              <Dashboard data={{ espers, reliques }} user={user} />
+              <Dashboard data={{ espers, reliques, set }} user={user} />
             </Container>
           </Box>
         }

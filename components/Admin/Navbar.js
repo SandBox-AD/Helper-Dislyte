@@ -84,7 +84,7 @@ export default function Navbar({ props }) {
   return (
     <>
       <CssBaseline />
-      <MuiAppBar position="absolute" open={open}>
+      <MuiAppBar position="absolute" open={open} color='pansy'>
         <Toolbar sx={{ pr: '24px' }}>
           <IconButton
             edge="start"

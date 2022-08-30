@@ -1,12 +1,6 @@
 import { useState } from 'react'
 import {
   Box,
-  MenuItem,
-  Button,
-  Select,
-  InputLabel,
-  FormHelperText,
-  Alert,
   Grid,
   Paper,
   Avatar,
@@ -20,21 +14,19 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Checkbox,
 } from '@mui/material'
 import Image from 'next/image'
+import { css } from '@emotion/react'
+import Form from './Form'
 
-export default function Dashboard({ children, data, user }) {
+export default function Dashboard({ children, data, user, set }) {
+  console.log(data)
   const [esper, setEsperValue] = useState(data.espers.data[0].id)
-  const [esperSet, setEsperSet] = useState({ espersSet: [] })
   const [relique, setRelique] = useState(data.reliques.data[0].id)
   const [relique2, setRelique2] = useState(data.reliques.data[9].id)
   const [indexEspeer, setIndex] = useState(data.espers.data[0])
   const [indexRelique2, setIndexRelique2] = useState(data.reliques.data[9])
   const [indexRelique4, setIndexRelique4] = useState(data.reliques.data[0])
-  fetch('http://localhost:8080/api/possede/' + esper)
-    .then((response) => response.json())
-    .then((data) => setEsperSet(data))
   const handleChange = (event) => {
     let name = event.target.name
     if (name == 'esper') {
@@ -63,10 +55,11 @@ export default function Dashboard({ children, data, user }) {
   const handleSubmit = async (event) => {
     event.preventDefault()
     const data = {
-      esper: event.target.esper.value,
-      relique4: event.target.relique4.value,
-      relique2: event.target.relique2.value,
+      idCharacter: event.target.esper.value,
+      Idrelique: event.target.relique4.value,
+      idrelique2: event.target.relique2.value,
       isValid: 0,
+      stat:1,
     }
     const JSONdata = JSON.stringify(data)
     const options = {
@@ -76,90 +69,33 @@ export default function Dashboard({ children, data, user }) {
       },
       body: JSONdata,
     }
-    fetch('http://localhost:8080/api/create/esper/possede', options)
-    let contenu = "Validé l'esper ajoutée"
-    fetch('http://localhost:8080/api/notification/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contenu: contenu,
-        user: user.sub.substring(user.sub.indexOf('|') + 1),
-      }),
-    })
-    fetch('http://localhost:8080/api/set/esper/' + event.target.esper.value)
-      .then((response) => response.json())
-      .then((data) => setEsperSet(data))
+    fetch('http://localhost:8080/api/possede', options)
+    // fetch('http://localhost:8080/api/notification/create', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     contenu: contenu,
+    //     user: user.sub.substring(user.sub.indexOf('|') + 1),
+    //   }),
+    // })
   }
   return (
     <Grid container spacing={3} alignItems="stretch">
       <Grid item xs>
-        <Paper variant="purple-indigo" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-          <Box component="form" onSubmit={handleSubmit}>
-            <InputLabel id="select-esper">Esper</InputLabel>
-            <Select
-              name="esper"
-              value={esper}
-              onChange={handleChange}
-              label="Esper"
-              labelId="select-esper"
-            >
-              {data.espers.data.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.esper}
-                </MenuItem>
-              ))}
-            </Select>
-            <InputLabel id="select-relique4">Relique set 4</InputLabel>
-            <Select
-              name="relique4"
-              value={relique}
-              onChange={handleChange}
-              label="Relique set 4"
-              labelId="relique4"
-            >
-              {data.reliques.data.map(
-                (option) =>
-                  option.setRelique == 4 && (
-                    <MenuItem key={option.id} value={option.id}>
-                      {option.name + ' ' + option.setRelique}*
-                    </MenuItem>
-                  )
-              )}
-            </Select>
-            <InputLabel id="relique2">Relique set 2</InputLabel>
-            <Select
-              name="relique2"
-              value={relique2}
-              onChange={handleChange}
-              label="Relique set 2"
-              labelId="relique2"
-            >
-              {data.reliques.data.map(
-                (option) =>
-                  option.setRelique == 2 && (
-                    <MenuItem key={option.id} value={option.id}>
-                      {option.name + ' ' + option.setRelique}*
-                    </MenuItem>
-                  )
-              )}
-            </Select>
-            <Button
-              type="submit"
-              noValidate
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Envoyer
-            </Button>
-          </Box>
-        </Paper>
+        <Form
+          data={data}
+          esper={esper}
+          relique={relique}
+          relique2={relique2}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+        />
       </Grid>
       <Grid item xs>
-        <Paper variant="blueVioletWheel">
-          <Card>
+        <Paper>
+          <Card variant="bg-thistle">
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <CardHeader
                 avatar={
@@ -205,8 +141,8 @@ export default function Dashboard({ children, data, user }) {
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <Paper variant="blueVioletWheel">
-          <Table size="medium">
+        <Paper>
+          <Table size="small" variant="test">
             <TableHead>
               <TableRow>
                 <TableCell>#</TableCell>
@@ -216,16 +152,20 @@ export default function Dashboard({ children, data, user }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {esperSet.data.map((esper, index) => (
-                                // esper.isValid == 1 &&
-                                <TableRow key={index}>
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{esper.esper}</TableCell>
-                                    <TableCell>{esper.relique4}</TableCell>
-                                    <TableCell>{esper.relique2}</TableCell>
-                                    <TableCell>{esper.isValid ? "Validé" : "Pas encore Validé"}</TableCell>
-                                </TableRow>
-                            ))} */}
+              {data.set.data.map(
+                (data, index) =>
+                  indexEspeer.esper == data.esper && (
+                    <TableRow key={index}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{data.esper}</TableCell>
+                      <TableCell>{data.relique4}</TableCell>
+                      <TableCell>{data.relique2}</TableCell>
+                      <TableCell>
+                        {data.isValid ? 'Validé' : 'Pas encore Validé'}
+                      </TableCell>
+                    </TableRow>
+                  )
+              )}
             </TableBody>
           </Table>
         </Paper>

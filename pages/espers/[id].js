@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import  { useState } from 'react'
 import Head from 'next/head'
 import { useUser } from '@auth0/nextjs-auth0'
-import Layout, { siteTitle } from '../../components/Layout'
 import { Alert, AlertTitle, IconButton, Collapse } from '@mui/material'
-import ListCustom from '../../components/ListCustom'
 import CloseIcon from '@mui/icons-material/Close'
+import PropTypes from 'prop-types';
+import Layout, { siteTitle } from '../../components/Layout'
+import ListCustom from '../../components/ListCustom'
+
 
 export async function getStaticPaths() {
   // Call an external API endpoint to get posts
   const res = await fetch('http://localhost:8080/api/esper/')
   const espers = await res.json()
-  const paths = espers['data'].map((esper) => ({
+  const paths = espers.data.map((esper) => ({
     params: { id: esper.id.toString() },
   }))
   // We'll pre-render only these paths at build time.
@@ -19,14 +21,12 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  let url = 'http://localhost:8080/api/esper/' + params.id
-  const res = await fetch(url)
+  const res = await fetch(`http://localhost:8080/api/esper/${  params.id}`)
   const esper = await res.json()
   return { props: { esper } }
 }
 
-export default function Esper({ esper }) {
-  console.log(esper)
+export default function Esper(props) {
   const { user, error } = useUser()
   const [open, setOpen] = useState(true)
   if (error)
@@ -38,7 +38,7 @@ export default function Esper({ esper }) {
         <div>{error.message}</div>
       </Layout>
     )
-  if (esper.length === 0)
+  if (!props)
     return (
       <Layout>
         <Head>{siteTitle}</Head>
@@ -52,7 +52,7 @@ export default function Esper({ esper }) {
           <Head>
             <title>{siteTitle}</title>
           </Head>
-          <ListCustom data={esper} />
+          <ListCustom data={props} />
         </Layout>
       )
     )
@@ -85,7 +85,11 @@ export default function Esper({ esper }) {
             à un compte sur le site
           </Alert>
         </Collapse>
-        <ListCustom data={esper} />
+        <ListCustom data={props} />
       </Layout>
     )
+}
+
+Esper.propType = {
+  props: PropTypes.arrayOf(PropTypes.arrayOf)
 }

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+// import Head from 'next/head'
 import createEmotionServer from '@emotion/server/create-instance'
 import theme from '../src/theme'
 import createEmotionCache from '../src/createEmotionCache'
@@ -9,7 +10,6 @@ export default class MyDocument extends Document {
     return (
       <Html lang="fr">
         <Head>
-          {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link rel="shortcut icon" href="/static/favicon.ico" />
           <link
@@ -18,8 +18,6 @@ export default class MyDocument extends Document {
           />
           <title>Dislyte Helper</title>
           <link rel="icon" href="/favicon.ico" />
-
-          {/* Inject MUI styles first to match with the prepend: true configuration. */}
           {this.props.emotionStyleTags}
         </Head>
         <body>
