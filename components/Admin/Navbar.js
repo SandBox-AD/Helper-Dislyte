@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 import {
   AppBar,
   Drawer,
-  Box,
   CssBaseline,
   Toolbar,
   IconButton,
@@ -10,28 +9,13 @@ import {
   Badge,
   Divider,
   List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Container,
-  Grid,
-  Copyright,
-  Paper,
-} from '@mui/material'
-import { styled } from '@mui/material/styles'
-import {
-  Notifications,
-  ChevronLeft,
-  Menu,
-  ShoppingCart,
-  People,
-  Layers,
-  Assignment,
-  BarChartRounded,
-} from '@mui/icons-material'
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Notifications, ChevronLeft, Menu } from '@mui/icons-material';
 
-import { mainListItems, secondaryListItems } from './listitem'
-const drawerWidth = 240
+import { mainListItems, secondaryListItems } from './listitem';
+
+const drawerWidth = 240;
 
 const MuiAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -49,7 +33,7 @@ const MuiAppBar = styled(AppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-}))
+}));
 const MuiDrawer = styled(Drawer, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
@@ -74,17 +58,17 @@ const MuiDrawer = styled(Drawer, {
       },
     }),
   },
-}))
+}));
 
-export default function Navbar({ props }) {
-  const [open, setOpen] = useState(true)
+export default function Navbar() {
+  const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
   return (
     <>
       <CssBaseline />
-      <MuiAppBar position="absolute" open={open} color='pansy'>
+      <MuiAppBar position="absolute" open={open} color="pansy">
         <Toolbar sx={{ pr: '24px' }}>
           <IconButton
             edge="start"
@@ -132,5 +116,5 @@ export default function Navbar({ props }) {
         </List>
       </MuiDrawer>
     </>
-  )
+  );
 }

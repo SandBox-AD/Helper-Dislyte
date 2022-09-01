@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   Box,
   Grid,
@@ -14,62 +14,60 @@ import {
   TableCell,
   TableHead,
   TableRow,
-} from '@mui/material'
-import Image from 'next/image'
-import { css } from '@emotion/react'
-import Form from './Form'
+} from '@mui/material';
+import PropTypes from 'prop-types';
+import Form from './Form';
 
-export default function Dashboard({ children, data, user, set }) {
-  console.log(data)
-  const [esper, setEsperValue] = useState(data.espers.data[0].id)
-  const [relique, setRelique] = useState(data.reliques.data[0].id)
-  const [relique2, setRelique2] = useState(data.reliques.data[9].id)
-  const [indexEspeer, setIndex] = useState(data.espers.data[0])
-  const [indexRelique2, setIndexRelique2] = useState(data.reliques.data[9])
-  const [indexRelique4, setIndexRelique4] = useState(data.reliques.data[0])
+export default function Dashboard({ data }) {
+  const [esper, setEsperValue] = useState(data.espers.data[0].id);
+  const [relique, setRelique] = useState(data.reliques.data[0].id);
+  const [relique2, setRelique2] = useState(data.reliques.data[9].id);
+  const [indexEspeer, setIndex] = useState(data.espers.data[0]);
+  const [indexRelique2, setIndexRelique2] = useState(data.reliques.data[9]);
+  const [indexRelique4, setIndexRelique4] = useState(data.reliques.data[0]);
   const handleChange = (event) => {
-    let name = event.target.name
-    if (name == 'esper') {
-      setEsperValue(event.target.value)
+    const { name } = event.target;
+    if (name === 'esper') {
+      setEsperValue(event.target.value);
       setIndex(
         data.espers.data[
-          data.espers.data.findIndex((obj) => obj.id == event.target.value)
+          data.espers.data.findIndex((obj) => obj.id === event.target.value)
         ]
-      )
-    } else if (name == 'relique4') {
-      setRelique(event.target.value)
+      );
+    } else if (name === 'relique4') {
+      setRelique(event.target.value);
       setIndexRelique4(
         data.reliques.data[
-          data.reliques.data.findIndex((obj) => obj.id == event.target.value)
+          data.reliques.data.findIndex((obj) => obj.id === event.target.value)
         ]
-      )
-    } else if (name == 'relique2') {
-      setRelique2(event.target.value)
+      );
+    } else if (name === 'relique2') {
+      setRelique2(event.target.value);
       setIndexRelique2(
         data.reliques.data[
-          data.reliques.data.findIndex((obj) => obj.id == event.target.value)
+          data.reliques.data.findIndex((obj) => obj.id === event.target.value)
         ]
-      )
+      );
     }
-  }
+  };
   const handleSubmit = async (event) => {
-    event.preventDefault()
-    const data = {
+    event.preventDefault();
+    const dataForm = {
       idCharacter: event.target.esper.value,
       Idrelique: event.target.relique4.value,
       idrelique2: event.target.relique2.value,
       isValid: 0,
-      stat:1,
-    }
-    const JSONdata = JSON.stringify(data)
+      stat: 1,
+    };
+    const JSONdata = JSON.stringify(dataForm);
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSONdata,
-    }
-    fetch('http://localhost:8080/api/possede', options)
+    };
+    fetch('http://localhost:8080/api/possede', options);
     // fetch('http://localhost:8080/api/notification/create', {
     //   method: 'POST',
     //   headers: {
@@ -80,7 +78,7 @@ export default function Dashboard({ children, data, user, set }) {
     //     user: user.sub.substring(user.sub.indexOf('|') + 1),
     //   }),
     // })
-  }
+  };
   return (
     <Grid container spacing={3} alignItems="stretch">
       <Grid item xs>
@@ -153,16 +151,13 @@ export default function Dashboard({ children, data, user, set }) {
             </TableHead>
             <TableBody>
               {data.set.data.map(
-                (data, index) =>
-                  indexEspeer.esper == data.esper && (
-                    <TableRow key={index}>
+                (option, index) =>
+                  indexEspeer.esper === option.esper && (
+                    <TableRow key={option.esper + index.toString()}>
                       <TableCell>{index + 1}</TableCell>
-                      <TableCell>{data.esper}</TableCell>
-                      <TableCell>{data.relique4}</TableCell>
-                      <TableCell>{data.relique2}</TableCell>
-                      <TableCell>
-                        {data.isValid ? 'Validé' : 'Pas encore Validé'}
-                      </TableCell>
+                      <TableCell>{option.esper}</TableCell>
+                      <TableCell>{option.relique4}</TableCell>
+                      <TableCell>{option.relique2}</TableCell>
                     </TableRow>
                   )
               )}
@@ -171,5 +166,48 @@ export default function Dashboard({ children, data, user, set }) {
         </Paper>
       </Grid>
     </Grid>
-  )
+  );
 }
+Dashboard.propTypes = {
+  data: PropTypes.shape({
+    set: PropTypes.shape({
+      status: PropTypes.string.isRequired,
+      length: PropTypes.number.isRequired,
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          esper: PropTypes.string.isRequired,
+          relique4: PropTypes.string.isRequired,
+          relique2: PropTypes.string.isRequired,
+        })
+      ),
+    }),
+    espers: PropTypes.shape({
+      status: PropTypes.string.isRequired,
+      length: PropTypes.number.isRequired,
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          esper: PropTypes.string.isRequired,
+          etoile: PropTypes.number.isRequired,
+          atk: PropTypes.number.isRequired,
+          hp: PropTypes.number.isRequired,
+          def: PropTypes.number.isRequired,
+          spd: PropTypes.number.isRequired,
+          summary: PropTypes.string.isRequired,
+          picture: PropTypes.string.isRequired,
+          icone: PropTypes.string.isRequired,
+        })
+      ),
+    }),
+    reliques: PropTypes.shape({
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          name: PropTypes.string.isRequired,
+          image: PropTypes.string.isRequired,
+          setRelique: PropTypes.number.isRequired,
+        })
+      ),
+    }),
+  }).isRequired,
+};

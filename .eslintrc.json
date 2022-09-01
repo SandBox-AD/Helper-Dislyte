@@ -6,6 +6,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:@next/next/recommended",
     "airbnb",
     "plugin:react/jsx-runtime",
     "prettier"
@@ -19,6 +20,12 @@
   },
   "plugins": ["react"],
   "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-props-no-spreading": [
+      1,
+      {
+        "custom": "ignore"
+      }
+    ]
   }
 }

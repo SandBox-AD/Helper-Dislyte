@@ -1,6 +1,6 @@
-import { createTheme, hexToRgb } from '@mui/material/styles'
-import { red } from '@mui/material/colors'
-import { color } from '@mui/system'
+import { createTheme } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
+
 const purple = {
   cardinal: '#C1273C',
   palatinate: '#5A0B57',
@@ -16,7 +16,7 @@ const purple = {
     pansy: '#780D42',
     fenchLila: '#8666A3',
   },
-}
+};
 const background = {
   blueVioletWheel: '#4E1F79',
   byzantium: '#6D195A',
@@ -27,10 +27,10 @@ const background = {
   queenPink: '#E8D2D6',
   thistle: '#CCBED8',
   thistle4F: '#4FCCBED8',
-  rgb:{
-    thistle:'204,190,216',
-  }
-}
+  rgb: {
+    thistle: '204,190,216',
+  },
+};
 // Create a theme instance.
 const theme = createTheme({
   palette: {
@@ -83,7 +83,7 @@ const theme = createTheme({
           },
           style: {
             background: purple.indigo,
-            border: '5px solid ' + purple.indigo,
+            border: `5px solid ${  purple.indigo}`,
           },
         },
         {
@@ -100,7 +100,7 @@ const theme = createTheme({
           },
           style: {
             background: purple.palatinate,
-            border: '5px solid ' + purple.palatinate,
+            border: `5px solid ${  purple.palatinate}`,
           },
         },
         {
@@ -124,7 +124,7 @@ const theme = createTheme({
             variant: 'border-palatinate',
           },
           style: {
-            border: '5px solid ' + purple.palatinate,
+            border: `5px solid ${  purple.palatinate}`,
           },
         },
         {
@@ -149,7 +149,7 @@ const theme = createTheme({
         },
       ],
     },
-    MuiCard:{
+    MuiCard: {
       variants: [
         {
           props: {
@@ -159,12 +159,12 @@ const theme = createTheme({
             backgroundColor: `#b4a0c6`,
           },
         },
-      ]
-    }
+      ],
+    },
   },
   // typography:{
 
   // }
-})
+});
 
-export default theme
+export default theme;

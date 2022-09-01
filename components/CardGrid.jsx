@@ -22,7 +22,7 @@ export default class CardGrid extends React.Component {
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         {children.data.map((_esper) => (
           <Grid item xs={2} sm={4} md={4}>
-            <Link href="/test/espers/">
+            <Link href={`/test/espers/${_esper.id.toString()}`}>
               <Card>
                 <CardActionArea>
                   <CardMedia
