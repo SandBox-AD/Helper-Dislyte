@@ -12,31 +12,50 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import ErrorBoundary from '../components/ErrorBondary';
+import Loading from '../components/common/Loading/Loading';
+import React from 'react';
 
 const clientSideEmotionCache = createEmotionCache();
 export default function MyApp(props) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <title>Dislyte Helper</title>
-      </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <UserProvider>
-          <ErrorBoundary>
-            <Component {...pageProps} />
-          </ErrorBoundary>
-        </UserProvider>
-      </ThemeProvider>
-    </CacheProvider>
-  );
+    const {
+        Component,
+        emotionCache = clientSideEmotionCache,
+        pageProps,
+    } = props;
+    const [loading, setLoading] = React.useState(true);
+    React.useEffect(() => {
+        setTimeout(() => setLoading(false), 6000);
+    }, []);
+    return (
+        <>
+            {!loading ? (
+                <CacheProvider value={emotionCache}>
+                    <Head>
+                        <meta
+                            name="viewport"
+                            content="initial-scale=1, width=device-width"
+                        />
+                        <title>Dislyte Helper</title>
+                    </Head>
+                    <ThemeProvider theme={theme}>
+                        <CssBaseline />
+                        <UserProvider>
+                            <ErrorBoundary>
+                                <Component {...pageProps} />
+                            </ErrorBoundary>
+                        </UserProvider>
+                    </ThemeProvider>
+                </CacheProvider>
+            ) : (
+                <Loading />
+            )}
+        </>
+    );
 }
 MyApp.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types, react/require-default-props
-  emotionCache: PropTypes.object,
-  // eslint-disable-next-line react/forbid-prop-types
-  pageProps: PropTypes.object.isRequired,
+    Component: PropTypes.elementType.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types, react/require-default-props
+    emotionCache: PropTypes.object,
+    // eslint-disable-next-line react/forbid-prop-types
+    pageProps: PropTypes.object.isRequired,
 };
